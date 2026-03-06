@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mapa Visual de Geografia — Urbanização II</title>
+  <title>Mapa Visual de Geografia — Espaço Rural</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
   <style>
-    :root{--bg:#0f172a;--card:#1e293b;--card2:#2c3e57;--text:#f8fafc;--muted:#bfdbfe;--b:rgba(191,219,254,.24);--c1:#22d3ee;--c2:#a3e635;--c3:#f59e0b}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at 10% 8%,#1d4ed8 0%,var(--bg) 36%),var(--bg);color:var(--text)}
+    :root{--bg:#0f172a;--card:#1e293b;--card2:#2b3d4f;--text:#f8fafc;--muted:#bbf7d0;--b:rgba(187,247,208,.24);--c1:#22d3ee;--c2:#a3e635;--c3:#f59e0b}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at 10% 8%,#15803d 0%,var(--bg) 36%),var(--bg);color:var(--text)}
     .page{max-width:1300px;margin:auto;padding:18px;display:grid;gap:12px}
     .card{background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid var(--b);border-radius:16px;padding:12px}
     .hero h1{margin:0 0 8px;font-size:clamp(1.3rem,2.3vw,2rem)} .hero p{margin:6px 0;color:var(--muted)}
     .layout{display:grid;grid-template-columns:250px 1fr 410px;gap:12px;align-items:start}
-    #map{width:100%;height:520px;border:1px solid var(--b);border-radius:12px;background:#0b1324}
+    #map{width:100%;height:520px;border:1px solid var(--b);border-radius:12px;background:#0b1624}
     .module{width:100%;text-align:left;padding:9px;border:1px solid var(--b);border-radius:10px;background:rgba(255,255,255,.03);color:var(--text);margin-bottom:8px}
     .module.active{border-color:var(--c1);box-shadow:0 0 0 2px rgba(34,211,238,.28);background:rgba(34,211,238,.12)}
     .topics{display:grid;gap:7px;margin:8px 0}.topic{border:1px solid var(--b);border-radius:10px;padding:8px;background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;text-align:left}
@@ -31,9 +31,9 @@
 <div id="tooltip"></div>
 <main class="page">
   <section class="card hero">
-    <h1>🌆 Urbanização II — gestão, desigualdades e cidades resilientes</h1>
-    <p>Este módulo aprofunda os desafios urbanos contemporâneos: governança metropolitana, desigualdades, mobilidade e sustentabilidade.</p>
-    <p>💡 Roteiro mental: <strong>metrópole ➜ desigualdade territorial ➜ políticas urbanas ➜ inovação ➜ resiliência</strong>.</p>
+    <h1>🌾 Espaço Rural — mapa visual interativo</h1>
+    <p>Este módulo aborda a organização do espaço rural, sistemas produtivos e transformações no campo contemporâneo.</p>
+    <p>💡 Roteiro mental: <strong>estrutura fundiária ➜ produção agropecuária ➜ tecnologia ➜ impactos socioambientais ➜ sustentabilidade</strong>.</p>
   </section>
 
   <section class="layout">
@@ -52,19 +52,20 @@
       <button class="module">Módulo 11 — População I</button>
       <button class="module">Módulo 12 — População II</button>
       <button class="module">Módulo 13 — Urbanização I</button>
-      <button class="module active">Módulo 14 — Urbanização II</button>
-      <div class="legend"><span>🌍 D3</span><span>🗺️ GeoJSON real</span><span>🌆 Metrópoles</span></div>
+      <button class="module">Módulo 14 — Urbanização II</button>
+      <button class="module active">Módulo 15 — Espaço Rural</button>
+      <div class="legend"><span>🌍 D3</span><span>🗺️ GeoJSON real</span><span>🌾 Rural</span></div>
     </aside>
 
     <section class="card">
-      <h3 style="margin:0 0 8px">🌐 Macrocorredores urbanos e pressão metropolitana (didático)</h3>
+      <h3 style="margin:0 0 8px">🌐 Grandes áreas de produção agropecuária (didático)</h3>
       <svg id="map" viewBox="0 0 980 520"></svg>
-      <p class="small" style="margin:8px 0 0">As zonas destacadas ajudam a visualizar áreas com forte integração urbana e desafios de governança.</p>
+      <p class="small" style="margin:8px 0 0">As zonas destacadas representam regiões de forte produção agropecuária e integração com mercados globais.</p>
       <p id="hint" class="warn" style="display:none">Falha ao carregar GeoJSON remoto.</p>
     </section>
 
     <aside class="card">
-      <h3 id="title" style="margin-top:0">Urbanização II — visão geral</h3>
+      <h3 id="title" style="margin-top:0">Espaço Rural — visão geral</h3>
       <div id="topics" class="topics"></div>
       <div id="importance" class="importance"></div>
       <div id="boxes"></div>
@@ -75,32 +76,32 @@
 
 <script>
 const topicData={
-  governanca:{label:"🏛️ Governança metropolitana",importance:"É central para coordenar transporte, habitação e infraestrutura entre municípios integrados.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Região metropolitana.</li><li>Gestão interfederativa.</li><li>Planejamento integrado.</li></ul>"},{t:"💡 Explicação direta",c:"A governança metropolitana busca decisões coordenadas para problemas que ultrapassam limites municipais."},{t:"🏠 Exemplo cotidiano",c:"Linhas de transporte intermunicipal exigem integração tarifária e planejamento conjunto."},{t:"🔗 Conexões",c:"Relaciona-se com mobilidade, saneamento, uso do solo e financiamento urbano."},{t:"⚠️ Atenção",c:"Sem cooperação institucional, soluções ficam fragmentadas e menos eficazes."}],diagram:["Integração","Planejamento","Execução","Avaliação"]},
-  desigualdades:{label:"⚖️ Desigualdades urbanas",importance:"Entender desigualdades é essencial para promover acesso justo à cidade e reduzir vulnerabilidades.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Segregação socioespacial.</li><li>Déficit habitacional.</li><li>Acesso desigual a serviços.</li></ul>"},{t:"💡 Explicação direta",c:"A cidade distribui oportunidades de forma desigual, impactando renda, saúde, educação e mobilidade."},{t:"🚌 Exemplo cotidiano",c:"Moradias distantes de emprego elevam custos e tempo de deslocamento diário."},{t:"🔗 Conexões",c:"Conecta-se com população, justiça socioambiental e políticas públicas urbanas."},{t:"⚠️ Atenção",c:"Melhorias pontuais não resolvem desigualdade estrutural sem ações contínuas."}],diagram:["Território","Acesso","Oportunidade","Qualidade de vida"]},
-  cidadesinteligentes:{label:"💡 Inovação e cidades inteligentes",importance:"A inovação urbana pode melhorar eficiência de serviços e qualidade de vida quando aplicada com inclusão social.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Dados urbanos e sensores.</li><li>Gestão digital de serviços.</li><li>Inclusão tecnológica.</li></ul>"},{t:"💡 Explicação direta",c:"Cidades inteligentes usam informação para otimizar trânsito, energia, saneamento e segurança."},{t:"📱 Exemplo cotidiano",c:"Semáforos inteligentes e monitoramento de ônibus reduzem tempo de espera e congestionamentos."},{t:"🔗 Conexões",c:"Relaciona-se com governança, mobilidade, energia e participação cidadã."},{t:"⚠️ Atenção",c:"Tecnologia sem equidade pode ampliar exclusões."}],diagram:["Dados","Gestão","Serviço","Eficiência social"]},
-  resiliencia:{label:"🌱 Sustentabilidade e resiliência urbana",importance:"É crucial para preparar cidades para eventos extremos e reduzir impactos socioambientais no longo prazo.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Infraestrutura verde.</li><li>Adaptação climática urbana.</li><li>Redução de risco.</li></ul>"},{t:"💡 Explicação direta",c:"Cidades resilientes antecipam riscos e investem em soluções que combinam engenharia e natureza."},{t:"🛠️ Exemplo cotidiano",c:"Parques lineares, drenagem sustentável e arborização reduzem alagamentos e ilhas de calor."},{t:"🔗 Conexões",c:"Conecta-se com climatologia, hidrografia, saúde e planejamento territorial."},{t:"⚠️ Atenção",c:"Resiliência depende de manutenção contínua e atualização dos planos urbanos."}],diagram:["Risco","Prevenção","Resposta","Recuperação"]}
+  estrutura:{label:"🧱 Estrutura fundiária",importance:"É essencial para entender quem controla a terra, como se organiza a produção e quais conflitos surgem no campo.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Latifúndio e minifúndio.</li><li>Concentração fundiária.</li><li>Reforma agrária.</li></ul>"},{t:"💡 Explicação direta",c:"A forma de distribuição da terra influencia produtividade, renda e condições de vida no meio rural."},{t:"🏠 Exemplo cotidiano",c:"Concentração de terras pode reduzir oportunidades para pequenos produtores locais."},{t:"🔗 Conexões",c:"Relaciona-se com políticas públicas, migrações e organização social do campo."},{t:"⚠️ Atenção",c:"Tamanho da propriedade, sozinho, não define eficiência nem justiça social."}],diagram:["Terra","Acesso","Produção","Renda"]},
+  producao:{label:"🚜 Sistemas de produção",importance:"Compreender os sistemas agrícolas é central para analisar oferta de alimentos, emprego e impactos territoriais.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Agricultura familiar e empresarial.</li><li>Monocultura e policultura.</li><li>Pecuária intensiva e extensiva.</li></ul>"},{t:"💡 Explicação direta",c:"Diferentes sistemas combinam trabalho, capital, tecnologia e uso da terra de formas distintas."},{t:"🛒 Exemplo cotidiano",c:"Tipo de produção no campo afeta preço e disponibilidade de alimentos na cidade."},{t:"🔗 Conexões",c:"Conecta-se com comércio, logística, indústria de alimentos e segurança alimentar."},{t:"⚠️ Atenção",c:"Alta produtividade pode vir acompanhada de impactos ambientais se não houver manejo adequado."}],diagram:["Modelo produtivo","Tecnologia","Mercado","Resultado territorial"]},
+  modernizacao:{label:"🤖 Modernização do campo",importance:"É relevante porque transforma relações de trabalho e aumenta integração do espaço rural com cadeias globais.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Mecanização.</li><li>Agricultura de precisão.</li><li>Biotecnologia.</li></ul>"},{t:"💡 Explicação direta",c:"A modernização eleva eficiência, mas também altera empregos e pode ampliar desigualdades regionais."},{t:"📡 Exemplo cotidiano",c:"Uso de sensores e drones melhora monitoramento de lavouras e uso racional de insumos."},{t:"🔗 Conexões",c:"Relaciona-se com urbanização, educação técnica, inovação e mercado internacional."},{t:"⚠️ Atenção",c:"Tecnologia sem assistência e crédito acessível pode excluir pequenos produtores."}],diagram:["Inovação","Produtividade","Mudança social","Integração"]},
+  sustentabilidade:{label:"🌱 Rural sustentável",importance:"É crucial para conciliar produção de alimentos com conservação de solos, água e biodiversidade.",boxes:[{t:"🔑 Conceitos-chave",c:"<ul><li>Manejo conservacionista.</li><li>Agroecologia.</li><li>Recuperação de áreas degradadas.</li></ul>"},{t:"💡 Explicação direta",c:"Sustentabilidade rural depende de práticas produtivas que preservem recursos naturais no longo prazo."},{t:"💧 Exemplo cotidiano",c:"Proteção de nascentes e matas ciliares melhora qualidade da água para campo e cidade."},{t:"🔗 Conexões",c:"Conecta-se com climatologia, hidrografia, segurança alimentar e políticas ambientais."},{t:"⚠️ Atenção",c:"Soluções sustentáveis exigem continuidade e apoio técnico, não ações isoladas."}],diagram:["Produção","Conservação","Resiliência","Futuro"]}
 };
 
 const topicsEl=document.getElementById('topics'),titleEl=document.getElementById('title'),importanceEl=document.getElementById('importance'),boxesEl=document.getElementById('boxes'),diagramEl=document.getElementById('diagram');
-function renderTopic(k){const t=topicData[k];titleEl.textContent=`Urbanização II — ${t.label.replace(/^..\s/,"")}`;importanceEl.innerHTML=`<strong>⭐ Mais relevante:</strong> ${t.importance}`;boxesEl.innerHTML=t.boxes.map(b=>`<article class='box'><h4>${b.t}</h4><p>${b.c}</p></article>`).join('');diagramEl.innerHTML=t.diagram.map(d=>`<span class='chip'>${d}</span>`).join('');[...topicsEl.querySelectorAll('.topic')].forEach(btn=>btn.classList.toggle('active',btn.dataset.k===k));}
-(function initTopics(){topicsEl.innerHTML=Object.entries(topicData).map(([k,v])=>`<button class='topic' data-k='${k}'>${v.label}</button>`).join('');topicsEl.onclick=e=>{const b=e.target.closest('.topic');if(b)renderTopic(b.dataset.k)};renderTopic('governanca')})();
+function renderTopic(k){const t=topicData[k];titleEl.textContent=`Espaço Rural — ${t.label.replace(/^..\s/,"")}`;importanceEl.innerHTML=`<strong>⭐ Mais relevante:</strong> ${t.importance}`;boxesEl.innerHTML=t.boxes.map(b=>`<article class='box'><h4>${b.t}</h4><p>${b.c}</p></article>`).join('');diagramEl.innerHTML=t.diagram.map(d=>`<span class='chip'>${d}</span>`).join('');[...topicsEl.querySelectorAll('.topic')].forEach(btn=>btn.classList.toggle('active',btn.dataset.k===k));}
+(function initTopics(){topicsEl.innerHTML=Object.entries(topicData).map(([k,v])=>`<button class='topic' data-k='${k}'>${v.label}</button>`).join('');topicsEl.onclick=e=>{const b=e.target.closest('.topic');if(b)renderTopic(b.dataset.k)};renderTopic('estrutura')})();
 
 async function drawMap(){
   const svg=d3.select('#map'), width=980, height=520;
   const projection=d3.geoNaturalEarth1().fitExtent([[18,18],[width-18,height-18]],{type:'Sphere'});
   const path=d3.geoPath(projection);
 
-  svg.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#10243f').attr('stroke','rgba(191,219,254,.35)').attr('stroke-width',.9);
-  svg.append('path').datum(d3.geoGraticule10()).attr('d',path).attr('fill','none').attr('stroke','rgba(191,219,254,.16)').attr('stroke-width',.5);
+  svg.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#10243f').attr('stroke','rgba(187,247,208,.35)').attr('stroke-width',.9);
+  svg.append('path').datum(d3.geoGraticule10()).attr('d',path).attr('fill','none').attr('stroke','rgba(187,247,208,.16)').attr('stroke-width',.5);
 
-  const metroZones=[
-    {name:'Eixo Atlântico Europeu',lat1:43,lat2:58,lon1:-8,lon2:30,color:'rgba(245,158,11,.14)'},
-    {name:'Megalópoles do Leste Asiático',lat1:20,lat2:44,lon1:105,lon2:145,color:'rgba(239,68,68,.15)'},
-    {name:'Corredor urbano nordeste EUA',lat1:33,lat2:46,lon1:-84,lon2:-66,color:'rgba(34,211,238,.16)'},
-    {name:'Faixa urbana africana emergente',lat1:-5,lat2:20,lon1:-20,lon2:40,color:'rgba(163,230,53,.14)'}
+  const ruralZones=[
+    {name:'Cinturão agrícola das Américas',lat1:-35,lat2:50,lon1:-120,lon2:-45,color:'rgba(245,158,11,.14)'},
+    {name:'Complexo agrícola euroasiático',lat1:35,lat2:60,lon1:-5,lon2:120,color:'rgba(34,211,238,.16)'},
+    {name:'Fronteiras agrícolas tropicais',lat1:-20,lat2:20,lon1:-80,lon2:40,color:'rgba(163,230,53,.14)'},
+    {name:'Pecuária extensiva da Oceania',lat1:-40,lat2:-10,lon1:110,lon2:155,color:'rgba(239,68,68,.12)'}
   ];
 
-  svg.append('g').selectAll('path.mz').data(metroZones).join('path')
+  svg.append('g').selectAll('path.rz').data(ruralZones).join('path')
     .attr('d',d=>path({type:'Polygon',coordinates:[[[d.lon1,d.lat1],[d.lon2,d.lat1],[d.lon2,d.lat2],[d.lon1,d.lat2],[d.lon1,d.lat1]]]}))
     .attr('fill',d=>d.color).attr('stroke','none');
 
@@ -108,18 +109,18 @@ async function drawMap(){
     const geo=await d3.json('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson');
     const tt=document.getElementById('tooltip');
     svg.append('g').selectAll('path.country').data(geo.features).join('path')
-      .attr('d',path).attr('fill','#1d4ed8').attr('stroke','#bfdbfe').attr('stroke-width',.35)
+      .attr('d',path).attr('fill','#166534').attr('stroke','#bbf7d0').attr('stroke-width',.35)
       .on('mousemove',function(event,d){
         d3.select(this).attr('fill','#22d3ee');
         const c=d3.geoCentroid(d), lat=Math.round(c[1]);
-        let ind='Transição urbana em curso';
-        if(Math.abs(lat)<25) ind='Expansão metropolitana acelerada e pressão por infraestrutura';
-        else if(Math.abs(lat)>=25 && Math.abs(lat)<50) ind='Metrópoles consolidadas com alta complexidade de gestão';
-        else if(Math.abs(lat)>=50) ind='Reestruturação urbana com envelhecimento e adaptação climática';
+        let ind='Diversidade de usos rurais';
+        if(Math.abs(lat)<25) ind='Produção tropical e pressão por uso da terra';
+        else if(Math.abs(lat)>=25 && Math.abs(lat)<50) ind='Agricultura mecanizada e integração de mercado';
+        else if(Math.abs(lat)>=50) ind='Limites climáticos e sazonalidade produtiva elevada';
         tt.style.display='block'; tt.style.left=(event.clientX+10)+'px'; tt.style.top=(event.clientY+10)+'px';
         tt.textContent=`${d.properties.name||'Sem nome'} • Latitude aprox: ${lat}° • Indicador: ${ind}`;
       })
-      .on('mouseleave',function(){d3.select(this).attr('fill','#1d4ed8');tt.style.display='none';});
+      .on('mouseleave',function(){d3.select(this).attr('fill','#166534');tt.style.display='none';});
   }catch(e){document.getElementById('hint').style.display='block';}
 }
 
