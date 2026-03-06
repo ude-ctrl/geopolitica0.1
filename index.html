@@ -11,6 +11,9 @@
     .page{max-width:1300px;margin:auto;padding:18px;display:grid;gap:12px}
     .card{background:linear-gradient(155deg,var(--card),var(--card2));border:1px solid var(--b);border-radius:16px;padding:12px}
     .hero h1{margin:0 0 8px;font-size:clamp(1.3rem,2.3vw,2rem)} .hero p{margin:6px 0;color:var(--muted)}
+    .download-wrap{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .download-btn{border:1px solid rgba(34,211,238,.5);background:rgba(34,211,238,.16);color:#ecfeff;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    .download-tip{font-size:.88rem;color:#d1fae5;align-self:center}
     .layout{display:grid;grid-template-columns:250px 1fr 410px;gap:12px;align-items:start}
     #map{width:100%;height:520px;border:1px solid var(--b);border-radius:12px;background:#0b1624}
     .module{width:100%;text-align:left;padding:9px;border:1px solid var(--b);border-radius:10px;background:rgba(255,255,255,.03);color:var(--text);margin-bottom:8px}
@@ -34,6 +37,10 @@
     <h1>🌾 Espaço Rural — mapa visual interativo</h1>
     <p>Este módulo aborda a organização do espaço rural, sistemas produtivos e transformações no campo contemporâneo.</p>
     <p>💡 Roteiro mental: <strong>estrutura fundiária ➜ produção agropecuária ➜ tecnologia ➜ impactos socioambientais ➜ sustentabilidade</strong>.</p>
+    <div class="download-wrap">
+      <button class="download-btn" id="downloadHtmlBtn">⬇️ Baixar projeto em HTML único</button>
+      <span class="download-tip">Gera um arquivo `.html` pronto para salvar e compartilhar.</span>
+    </div>
   </section>
 
   <section class="layout">
@@ -85,6 +92,21 @@ const topicData={
 const topicsEl=document.getElementById('topics'),titleEl=document.getElementById('title'),importanceEl=document.getElementById('importance'),boxesEl=document.getElementById('boxes'),diagramEl=document.getElementById('diagram');
 function renderTopic(k){const t=topicData[k];titleEl.textContent=`Espaço Rural — ${t.label.replace(/^..\s/,"")}`;importanceEl.innerHTML=`<strong>⭐ Mais relevante:</strong> ${t.importance}`;boxesEl.innerHTML=t.boxes.map(b=>`<article class='box'><h4>${b.t}</h4><p>${b.c}</p></article>`).join('');diagramEl.innerHTML=t.diagram.map(d=>`<span class='chip'>${d}</span>`).join('');[...topicsEl.querySelectorAll('.topic')].forEach(btn=>btn.classList.toggle('active',btn.dataset.k===k));}
 (function initTopics(){topicsEl.innerHTML=Object.entries(topicData).map(([k,v])=>`<button class='topic' data-k='${k}'>${v.label}</button>`).join('');topicsEl.onclick=e=>{const b=e.target.closest('.topic');if(b)renderTopic(b.dataset.k)};renderTopic('estrutura')})();
+
+function downloadSingleHTML() {
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'espaco-rural-mapa-interativo.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('downloadHtmlBtn').addEventListener('click', downloadSingleHTML);
 
 async function drawMap(){
   const svg=d3.select('#map'), width=980, height=520;
